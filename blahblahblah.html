@@ -1,93 +1,349 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Canvas | College Courses</title>
-    <link rel="icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        *{margin:0;padding:0;box-sizing:border-box;font-family:'Courier New',monospace}
-        :root{--primary-orange:#c27c15;--dark-bg:#0a0a0a;--light-text:#f0f0f0;--gray-text:#888;--accent-orange:#e69500}
-        body{background-color:var(--dark-bg);color:var(--light-text);overflow-x:hidden;line-height:1.6}
-        #matrix-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;opacity:.3}
-        .container{max-width:1200px;margin:0 auto;padding:20px;transform:translateY(0);transition:transform .5s ease-in-out}
-        .container.slide-down{transform:translateY(100%)}
-        header{text-align:center;padding:30px 0;border-bottom:1px solid var(--primary-orange);margin-bottom:40px}
-        .logo-container{display:flex;justify-content:center;align-items:center;margin-bottom:20px}
-        .logo{height:120px;width:auto;border-radius:10px;box-shadow:0 0 20px rgba(194,124,21,.5)}
-        .tagline{color:var(--primary-orange);font-size:1.2rem;margin-bottom:20px;text-shadow:0 0 5px rgba(194,124,21,.7)}
-        .terminal-prompt{background-color:rgba(10,10,10,.8);border:1px solid var(--primary-orange);border-radius:5px;padding:15px;margin:20px 0;box-shadow:0 0 15px rgba(194,124,21,.3)}
-        .prompt-line{margin:8px 0;color:var(--primary-orange)}
-        .typing{overflow:hidden;white-space:nowrap;border-right:2px solid var(--primary-orange);animation:typing 3.5s steps(40,end),blink-caret .75s step-end infinite}
-        @keyframes typing{from{width:0}to{width:100%}}
-        @keyframes blink-caret{from,to{border-color:transparent}50%{border-color:var(--primary-orange)}}
-        section{margin:40px 0;padding:20px;background-color:rgba(20,20,20,.7);border-radius:5px;border:1px solid rgba(194,124,21,.3)}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace
+        }
+
+        :root {
+            --primary-orange: #c27c15;
+            --primary-orange-rgb: 194, 124, 21;
+            --dark-bg: #0a0a0a;
+            --light-text: #f0f0f0;
+            --gray-text: #888;
+            --accent-orange: #e69500
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            overflow-x: hidden;
+            line-height: 1.6
+        }
+
+        #matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: .3
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            transform: translateY(0);
+            transition: transform .5s ease-in-out
+        }
+
+        .container.slide-down {
+            transform: translateY(100%)
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 0;
+            border-bottom: 1px solid var(--primary-orange);
+            margin-bottom: 40px
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px
+        }
+
+        .logo {
+            height: 120px;
+            width: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 20px var(--primary-orange);
+            animation: logoPop 0.8s ease-out;
+        }
+
+        @keyframes logoPop {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            70% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .tagline {
+            color: var(--primary-orange);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px rgba(var(--primary-orange-rgb), .7)
+        }
+
+        .terminal-prompt {
+            background-color: rgba(10, 10, 10, .8);
+            border: 1px solid var(--primary-orange);
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+            box-shadow: 0 0 15px rgba(var(--primary-orange-rgb), .3)
+        }
+
+        .prompt-line {
+            margin: 8px 0;
+            color: var(--primary-orange)
+        }
+
+        .typing {
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 2px solid var(--primary-orange);
+            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite
+        }
+
+        @keyframes typing {
+            from {
+                width: 0
+            }
+
+            to {
+                width: 100%
+            }
+        }
+
+        @keyframes blink-caret {
+
+            from,
+            to {
+                border-color: transparent
+            }
+
+            50% {
+                border-color: var(--primary-orange)
+            }
+        }
+
+        section {
+            margin: 40px 0;
+            padding: 20px;
+            background-color: rgba(20, 20, 20, .7);
+            border-radius: 5px;
+            border: 1px solid rgba(var(--primary-orange-rgb), .3)
+        }
+
         h2 {
-    color: var(--primary-orange);
-    margin: 30px auto;
-    font-size: 1.8rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    text-shadow: 0 0 5px rgba(194,124,21,.5);
-    position: relative;
-    padding: 15px 30px;
-    text-align: center;
-    background: linear-gradient(145deg, rgba(194,124,21,0.1), rgba(10,10,10,0.3));
-    border: 1px solid var(--primary-orange);
-    border-radius: 8px;
-    box-shadow: 0 0 25px rgba(194,124,21,0.4),
-                inset 0 1px 0 rgba(255,255,255,0.1);
-    max-width: 400px;
-    transition: all 0.3s ease;
-}
+            color: var(--primary-orange);
+            margin: 30px auto;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 5px rgba(var(--primary-orange-rgb), .5);
+            position: relative;
+            padding: 15px 30px;
+            text-align: center;
+            background: linear-gradient(145deg, rgba(var(--primary-orange-rgb), 0.1), rgba(10, 10, 10, 0.3));
+            border: 1px solid var(--primary-orange);
+            border-radius: 8px;
+            box-shadow: 0 0 25px rgba(var(--primary-orange-rgb), 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            max-width: 400px;
+            transition: all 0.3s ease;
+        }
 
-h2:hover {
-    box-shadow: 0 0 35px rgba(194,124,21,0.6),
-                inset 0 1px 0 rgba(255,255,255,0.1);
-    transform: translateY(-2px);
-}
+        h2:hover {
+            box-shadow: 0 0 35px rgba(var(--primary-orange-rgb), 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
 
-/* Add terminal-style brackets */
-h2::before,
-h2::after {
-    content: '[';
-    color: var(--accent-orange);
-    text-shadow: 0 0 10px rgba(230,149,0,0.7);
-    margin-right: 10px;
-}
+        h2::before,
+        h2::after {
+            content: '[';
+            color: var(--accent-orange);
+            text-shadow: 0 0 10px rgba(var(--primary-orange-rgb), 0.7);
+            margin-right: 10px;
+        }
 
-h2::after {
-    content: ']';
-    margin-left: 10px;
-    margin-right: 0;
-}
-        .lessons-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:25px;margin-top:20px}
-        .lesson-card{background:linear-gradient(145deg,#151515,#0a0a0a);border:1px solid var(--primary-orange);border-radius:8px;padding:15px;transition:all .3s ease;position:relative;overflow:hidden;cursor:pointer}
-        .lesson-card:hover{transform:translateY(-5px);box-shadow:0 8px 20px rgba(194,124,21,.4);border-color:var(--accent-orange)}
-        .lesson-image{width:100%;height:160px;object-fit:cover;border-radius:5px;margin-bottom:12px;border:1px solid rgba(194,124,21,.3)}
-        .lesson-title{font-size:1.3rem;color:var(--light-text);margin-bottom:8px}
-        .lesson-desc{color:var(--gray-text);margin-bottom:12px;font-size:.9rem;min-height:40px}
-        .launch-command{color:var(--primary-orange);font-size:.9rem;font-weight:bold;display:inline-block;padding:5px 10px;border:1px solid var(--primary-orange);border-radius:3px;transition:all .3s ease}
-        .lesson-card:hover .launch-command{background-color:rgba(194,124,21,.1);box-shadow:0 0 10px rgba(194,124,21,.5)}
-        footer{text-align:center;padding:30px 0;margin-top:40px;border-top:1px solid var(--primary-orange);color:var(--gray-text);font-size:.9rem}
-        .glow{text-shadow:0 0 5px currentColor}
-        .game-page{position:fixed;top:0;left:0;width:100%;height:100%;background-color:var(--dark-bg);z-index:1000;display:none;transform:translateY(100%);transition:transform .5s ease-in-out}
-        .game-page.active{transform:translateY(0);display:block}
-        .game-page.slide-down{transform:translateY(100%)}
-        .game-header{display:flex;justify-content:space-between;align-items:center;padding:15px 20px;background-color:rgba(20,20,20,.9);border-bottom:1px solid var(--primary-orange)}
-        .game-title{color:var(--primary-orange);font-size:1.5rem;text-shadow:0 0 5px rgba(194,124,21,.5)}
-        .game-controls{display:flex;gap:15px}
-        .btn{padding:8px 15px;background-color:rgba(194,124,21,.2);color:var(--primary-orange);border:1px solid var(--primary-orange);border-radius:3px;cursor:pointer;transition:all .3s ease;font-weight:bold}
-        .btn:hover{background-color:rgba(194,124,21,.3);box-shadow:0 0 10px rgba(194,124,21,.5)}
-        .game-container{padding:20px;text-align:center;height:calc(100vh - 70px);display:flex;flex-direction:column}
-        .fullscreen-btn-container{display:flex;justify-content:center;margin-bottom:20px}
-        .fullscreen-btn{padding:12px 25px;font-size:1.1rem;background-color:rgba(194,124,21,.3);color:var(--primary-orange);border:2px solid var(--primary-orange);border-radius:5px;cursor:pointer;transition:all .3s ease;font-weight:bold;box-shadow:0 0 15px rgba(194,124,21,.4)}
-        .fullscreen-btn:hover{background-color:rgba(194,124,21,.5);box-shadow:0 0 20px rgba(194,124,21,.7);transform:scale(1.05)}
-        .game-frame{flex:1;width:100%;border:1px solid var(--primary-orange);border-radius:5px;background-color:rgba(30,30,30,.7)}
-        .game-placeholder{flex:1;width:100%;background-color:rgba(30,30,30,.7);border:1px solid var(--primary-orange);border-radius:5px;display:flex;flex-direction:column;justify-content:center;align-items:center}
-        .game-placeholder i{font-size:4rem;color:var(--primary-orange);margin-bottom:20px;text-shadow:0 0 10px rgba(194,124,21,.7)}
+        h2::after {
+            content: ']';
+            margin-left: 10px;
+            margin-right: 0;
+        }
+
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px
+        }
+
+        .lesson-card {
+            background: linear-gradient(145deg, #151515, #0a0a0a);
+            border: 1px solid var(--primary-orange);
+            border-radius: 8px;
+            padding: 15px;
+            transition: all .3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer
+        }
+
+        .lesson-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(var(--primary-orange-rgb), .4);
+            border-color: var(--accent-orange)
+        }
+
+        .lesson-image {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(var(--primary-orange-rgb), .3)
+        }
+
+        .lesson-title {
+            font-size: 1.3rem;
+            color: var(--light-text);
+            margin-bottom: 8px
+        }
+
+        .lesson-desc {
+            color: var(--gray-text);
+            margin-bottom: 12px;
+            font-size: .9rem;
+            min-height: 40px
+        }
+
+        .launch-command {
+            color: var(--primary-orange);
+            font-size: .9rem;
+            font-weight: bold;
+            display: inline-block;
+            padding: 5px 10px;
+            border: 1px solid var(--primary-orange);
+            border-radius: 3px;
+            transition: all .3s ease
+        }
+
+        .lesson-card:hover .launch-command {
+            background-color: rgba(var(--primary-orange-rgb), .1);
+            box-shadow: 0 0 10px var(--primary-orange)
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+            border-top: 1px solid var(--primary-orange);
+            color: var(--gray-text);
+            font-size: .9rem
+        }
+
+        .glow {
+            text-shadow: 0 0 5px currentColor
+        }
+
+        .game-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--dark-bg);
+            z-index: 1000;
+            display: none;
+            transform: translateY(100%);
+            transition: transform .5s ease-in-out
+        }
+
+        .game-page.active {
+            transform: translateY(0);
+            display: block
+        }
+
+        .game-page.slide-down {
+            transform: translateY(100%)
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: rgba(20, 20, 20, .9);
+            border-bottom: 1px solid var(--primary-orange)
+        }
+
+        .game-title {
+            color: var(--primary-orange);
+            font-size: 1.5rem;
+            text-shadow: 0 0 5px rgba(var(--primary-orange-rgb), .5)
+        }
+
+        .game-controls {
+            display: flex;
+            gap: 15px
+        }
+
+        .btn {
+            padding: 8px 15px;
+            background-color: rgba(var(--primary-orange-rgb), .2);
+            color: var(--primary-orange);
+            border: 1px solid var(--primary-orange);
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all .3s ease;
+            font-weight: bold
+        }
+
+        .btn:hover {
+            background-color: rgba(var(--primary-orange-rgb), .3);
+            box-shadow: 0 0 10px var(--primary-orange)
+        }
+
+        .game-container {
+            height: calc(100vh - 70px);
+            display: flex;
+            flex-direction: column
+        }
+
+        .game-frame {
+            flex: 1;
+            width: 100%;
+            border: none;
+            background-color: rgba(30, 30, 30, .7)
+        }
+
+        .game-frame.fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 9999;
+        }
+
+        .game-frame.fullscreen ~ .game-header {
+            display: none;
+        }
+
         .social-icons {
             position: absolute;
             top: 20px;
@@ -98,61 +354,61 @@ h2::after {
         }
 
         .search-container {
-    max-width: 600px;
-    margin: 30px auto;
-    position: relative;
-}
+            max-width: 600px;
+            margin: 30px auto;
+            position: relative;
+        }
 
-.search-box {
-    width: 100%;
-    padding: 15px 50px 15px 20px;
-    background: rgba(20,20,20,.8);
-    border: 2px solid var(--primary-orange);
-    border-radius: 50px;
-    color: var(--light-text);
-    font-size: 1.1rem;
-    outline: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 15px rgba(194,124,21,.3);
-}
+        .search-box {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            background: rgba(20, 20, 20, .8);
+            border: 2px solid var(--primary-orange);
+            border-radius: 50px;
+            color: var(--light-text);
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(var(--primary-orange-rgb), .3);
+        }
 
-.search-box:focus {
-    box-shadow: 0 0 25px rgba(194,124,21,.6);
-    border-color: var(--accent-orange);
-}
+        .search-box:focus {
+            box-shadow: 0 0 25px rgba(var(--primary-orange-rgb), .6);
+            border-color: var(--accent-orange);
+        }
 
-.search-box::placeholder {
-    color: var(--gray-text);
-}
+        .search-box::placeholder {
+            color: var(--gray-text);
+        }
 
-.search-icon {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--primary-orange);
-    font-size: 1.2rem;
-    pointer-events: none;
-}
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-orange);
+            font-size: 1.2rem;
+            pointer-events: none;
+        }
 
-.no-results {
-    text-align: center;
-    color: var(--gray-text);
-    font-size: 1.1rem;
-    margin: 40px 0;
-    padding: 20px;
-    background: rgba(20,20,20,.5);
-    border-radius: 8px;
-    border: 1px solid rgba(194,124,21,.3);
-}
+        .no-results {
+            text-align: center;
+            color: var(--gray-text);
+            font-size: 1.1rem;
+            margin: 40px 0;
+            padding: 20px;
+            background: rgba(20, 20, 20, .5);
+            border-radius: 8px;
+            border: 1px solid rgba(var(--primary-orange-rgb), .3);
+        }
 
-.search-stats {
-    text-align: center;
-    color: var(--primary-orange);
-    margin-bottom: 20px;
-    font-size: 0.9rem;
-}
-        
+        .search-stats {
+            text-align: center;
+            color: var(--primary-orange);
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
         .social-icons a {
             color: var(--primary-orange);
             font-size: 1.5rem;
@@ -162,16 +418,16 @@ h2::after {
         .social-icons a:hover {
             color: var(--accent-orange);
             transform: translateY(-2px);
-            text-shadow: 0 0 10px rgba(230, 149, 0, 0.7);
+            text-shadow: 0 0 10px rgba(var(--primary-orange-rgb), 0.7);
         }
 
         .comments-section {
             max-width: 1200px;
             margin: 40px auto;
             padding: 20px;
-            background-color: rgba(20,20,20,.7);
+            background-color: rgba(20, 20, 20, .7);
             border-radius: 5px;
-            border: 1px solid rgba(194,124,21,.3);
+            border: 1px solid rgba(var(--primary-orange-rgb), .3);
             position: relative;
         }
 
@@ -236,11 +492,11 @@ h2::after {
         .acknowledge-btn:hover {
             background: var(--accent-orange);
             transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(194, 124, 21, 0.5);
+            box-shadow: 0 6px 15px rgba(var(--primary-orange-rgb), 0.5);
         }
 
         .padlet-embed {
-            border: 1px solid rgba(0,0,0,0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             box-sizing: border-box;
             overflow: hidden;
@@ -266,7 +522,132 @@ h2::after {
             height: 28px;
         }
 
-        /* Theme Toggle Styles */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0 30px;
+            gap: 20px;
+        }
+
+        .nav-tab {
+            padding: 12px 30px;
+            background: rgba(20, 20, 20, .8);
+            color: var(--primary-orange);
+            border: 2px solid var(--primary-orange);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-tab:hover {
+            background: rgba(var(--primary-orange-rgb), .2);
+            box-shadow: 0 0 15px var(--primary-orange);
+            transform: translateY(-2px);
+        }
+
+        .nav-tab.active {
+            background: rgba(var(--primary-orange-rgb), .3);
+            box-shadow: 0 0 20px var(--primary-orange);
+        }
+
+        .partners-section {
+            display: none;
+        }
+
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .partner-card {
+            background: linear-gradient(145deg, #151515, #0a0a0a);
+            border: 1px solid var(--primary-orange);
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .partner-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px var(--primary-orange);
+            border-color: var(--accent-orange);
+        }
+
+        .partner-image {
+            width: 100%;
+            height: 120px;
+            object-fit: contain;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(var(--primary-orange-rgb), .3);
+            background: rgba(30, 30, 30, .5);
+            padding: 10px;
+        }
+
+        .partner-title {
+            font-size: 1.4rem;
+            color: var(--light-text);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .partner-desc {
+            color: var(--gray-text);
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            min-height: 60px;
+        }
+
+        .partner-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .discord-btn {
+            padding: 8px 12px;
+            background-color: rgba(88, 101, 242, 0.2);
+            color: #5865F2;
+            border: 1px solid #5865F2;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .discord-btn:hover {
+            background-color: rgba(88, 101, 242, 0.3);
+            box-shadow: 0 0 10px rgba(88, 101, 242, 0.5);
+        }
+
+        .visit-btn {
+            flex: 1;
+            padding: 10px 15px;
+            background-color: rgba(var(--primary-orange-rgb), .2);
+            color: var(--primary-orange);
+            border: 1px solid var(--primary-orange);
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .visit-btn:hover {
+            background-color: rgba(var(--primary-orange-rgb), .3);
+            box-shadow: 0 0 10px var(--primary-orange);
+        }
+
         .theme-toggle-container {
             position: absolute;
             top: 20px;
@@ -275,7 +656,7 @@ h2::after {
         }
 
         .theme-toggle-btn {
-            background: rgba(20,20,20,.8);
+            background: rgba(20, 20, 20, .8);
             color: var(--primary-orange);
             border: 1px solid var(--primary-orange);
             border-radius: 50%;
@@ -291,14 +672,14 @@ h2::after {
         }
 
         .theme-toggle-btn:hover {
-            background: rgba(194,124,21,.2);
+            background: rgba(var(--primary-orange-rgb), .2);
             box-shadow: 0 0 15px var(--primary-orange);
             transform: scale(1.1);
         }
 
-        /* Rainbow Theme */
         .theme-rainbow {
             --primary-orange: #ff0080;
+            --primary-orange-rgb: 255, 0, 128;
             --dark-bg: #0a0a0a;
             --light-text: #f0f0f0;
             --gray-text: #aaa;
@@ -306,14 +687,14 @@ h2::after {
         }
 
         .theme-rainbow .logo {
-            filter: hue-rotate(180deg) saturate(2);
+            filter: hue-rotate(300deg) saturate(2) brightness(1.2);
+            box-shadow: 0 0 20px #ff0080 !important;
         }
 
         .theme-rainbow #matrix-bg {
             opacity: 0.4;
         }
 
-        /* Update all orange borders and glows for rainbow theme */
         .theme-rainbow header,
         .theme-rainbow footer,
         .theme-rainbow .terminal-prompt,
@@ -322,8 +703,8 @@ h2::after {
         .theme-rainbow .search-box,
         .theme-rainbow .game-header,
         .theme-rainbow .game-frame,
-        .theme-rainbow .game-placeholder,
-        .theme-rainbow .comments-section {
+        .theme-rainbow .comments-section,
+        .theme-rainbow .partner-card {
             border-color: var(--primary-orange) !important;
         }
 
@@ -331,14 +712,18 @@ h2::after {
         .theme-rainbow .launch-command,
         .theme-rainbow .btn:hover,
         .theme-rainbow .fullscreen-btn:hover,
-        .theme-rainbow .search-box:focus {
+        .theme-rainbow .search-box:focus,
+        .theme-rainbow .partner-card:hover,
+        .theme-rainbow .visit-btn:hover,
+        .theme-rainbow .nav-tab:hover,
+        .theme-rainbow .nav-tab.active {
             box-shadow: 0 0 15px var(--primary-orange) !important;
             border-color: var(--accent-orange) !important;
         }
 
-        /* Cyber Green Theme */
         .theme-cyber-green {
             --primary-orange: #00ff00;
+            --primary-orange-rgb: 0, 255, 0;
             --dark-bg: #000;
             --light-text: #00ff00;
             --gray-text: #008800;
@@ -346,14 +731,14 @@ h2::after {
         }
 
         .theme-cyber-green .logo {
-            filter: hue-rotate(120deg) saturate(3);
+            filter: hue-rotate(100deg) saturate(3) brightness(1.1);
+            box-shadow: 0 0 20px #ff6600 !important;
         }
 
         .theme-cyber-green #matrix-bg {
             opacity: 0.4;
         }
 
-        /* Update all orange borders and glows for cyber green */
         .theme-cyber-green header,
         .theme-cyber-green footer,
         .theme-cyber-green .terminal-prompt,
@@ -362,8 +747,8 @@ h2::after {
         .theme-cyber-green .search-box,
         .theme-cyber-green .game-header,
         .theme-cyber-green .game-frame,
-        .theme-cyber-green .game-placeholder,
-        .theme-cyber-green .comments-section {
+        .theme-cyber-green .comments-section,
+        .theme-cyber-green .partner-card {
             border-color: var(--primary-orange) !important;
         }
 
@@ -371,14 +756,18 @@ h2::after {
         .theme-cyber-green .launch-command,
         .theme-cyber-green .btn:hover,
         .theme-cyber-green .fullscreen-btn:hover,
-        .theme-cyber-green .search-box:focus {
+        .theme-cyber-green .search-box:focus,
+        .theme-cyber-green .partner-card:hover,
+        .theme-cyber-green .visit-btn:hover,
+        .theme-cyber-green .nav-tab:hover,
+        .theme-cyber-green .nav-tab.active {
             box-shadow: 0 0 15px var(--primary-orange) !important;
             border-color: var(--accent-orange) !important;
         }
 
-        /* Ice Blue Theme */
         .theme-ice-blue {
             --primary-orange: #00ccff;
+            --primary-orange-rgb: 0, 204, 255;
             --dark-bg: #001122;
             --light-text: #e0f7ff;
             --gray-text: #88aacc;
@@ -386,14 +775,14 @@ h2::after {
         }
 
         .theme-ice-blue .logo {
-            filter: hue-rotate(200deg) saturate(2);
+            filter: hue-rotate(190deg) saturate(2) brightness(1.1);
+            box-shadow: 0 0 20px #ff3300 !important;
         }
 
         .theme-ice-blue #matrix-bg {
             opacity: 0.4;
         }
 
-        /* Update all orange borders and glows for ice blue */
         .theme-ice-blue header,
         .theme-ice-blue footer,
         .theme-ice-blue .terminal-prompt,
@@ -402,8 +791,8 @@ h2::after {
         .theme-ice-blue .search-box,
         .theme-ice-blue .game-header,
         .theme-ice-blue .game-frame,
-        .theme-ice-blue .game-placeholder,
-        .theme-ice-blue .comments-section {
+        .theme-ice-blue .comments-section,
+        .theme-ice-blue .partner-card {
             border-color: var(--primary-orange) !important;
         }
 
@@ -411,14 +800,18 @@ h2::after {
         .theme-ice-blue .launch-command,
         .theme-ice-blue .btn:hover,
         .theme-ice-blue .fullscreen-btn:hover,
-        .theme-ice-blue .search-box:focus {
+        .theme-ice-blue .search-box:focus,
+        .theme-ice-blue .partner-card:hover,
+        .theme-ice-blue .visit-btn:hover,
+        .theme-ice-blue .nav-tab:hover,
+        .theme-ice-blue .nav-tab.active {
             box-shadow: 0 0 15px var(--primary-orange) !important;
             border-color: var(--accent-orange) !important;
         }
 
-        /* Solarized Theme */
         .theme-solarized {
             --primary-orange: #2aa198;
+            --primary-orange-rgb: 42, 161, 152;
             --dark-bg: #002b36;
             --light-text: #839496;
             --gray-text: #586e75;
@@ -426,14 +819,14 @@ h2::after {
         }
 
         .theme-solarized .logo {
-            filter: hue-rotate(160deg) saturate(1.5);
+            filter: hue-rotate(170deg) saturate(1.8) brightness(1.1);
+            box-shadow: 0 0 20px #ff6a00 !important;
         }
 
         .theme-solarized #matrix-bg {
             opacity: 0.4;
         }
 
-        /* Update all orange borders and glows for solarized */
         .theme-solarized header,
         .theme-solarized footer,
         .theme-solarized .terminal-prompt,
@@ -442,8 +835,8 @@ h2::after {
         .theme-solarized .search-box,
         .theme-solarized .game-header,
         .theme-solarized .game-frame,
-        .theme-solarized .game-placeholder,
-        .theme-solarized .comments-section {
+        .theme-solarized .comments-section,
+        .theme-solarized .partner-card {
             border-color: var(--primary-orange) !important;
         }
 
@@ -451,14 +844,18 @@ h2::after {
         .theme-solarized .launch-command,
         .theme-solarized .btn:hover,
         .theme-solarized .fullscreen-btn:hover,
-        .theme-solarized .search-box:focus {
+        .theme-solarized .search-box:focus,
+        .theme-solarized .partner-card:hover,
+        .theme-solarized .visit-btn:hover,
+        .theme-solarized .nav-tab:hover,
+        .theme-solarized .nav-tab.active {
             box-shadow: 0 0 15px var(--primary-orange) !important;
             border-color: var(--accent-orange) !important;
         }
 
-        /* Purple Haze Theme */
         .theme-purple-haze {
             --primary-orange: #9b59b6;
+            --primary-orange-rgb: 155, 89, 182;
             --dark-bg: #1a1a2e;
             --light-text: #e2e2e2;
             --gray-text: #8884d8;
@@ -466,14 +863,14 @@ h2::after {
         }
 
         .theme-purple-haze .logo {
-            filter: hue-rotate(270deg) saturate(1.8);
+            filter: hue-rotate(280deg) saturate(1.8) brightness(1.1);
+            box-shadow: 0 0 20px #b6596a !important;
         }
 
         .theme-purple-haze #matrix-bg {
             opacity: 0.4;
         }
 
-        /* Update all orange borders and glows for purple haze */
         .theme-purple-haze header,
         .theme-purple-haze footer,
         .theme-purple-haze .terminal-prompt,
@@ -482,8 +879,8 @@ h2::after {
         .theme-purple-haze .search-box,
         .theme-purple-haze .game-header,
         .theme-purple-haze .game-frame,
-        .theme-purple-haze .game-placeholder,
-        .theme-purple-haze .comments-section {
+        .theme-purple-haze .comments-section,
+        .theme-purple-haze .partner-card {
             border-color: var(--primary-orange) !important;
         }
 
@@ -491,39 +888,84 @@ h2::after {
         .theme-purple-haze .launch-command,
         .theme-purple-haze .btn:hover,
         .theme-purple-haze .fullscreen-btn:hover,
-        .theme-purple-haze .search-box:focus {
+        .theme-purple-haze .search-box:focus,
+        .theme-purple-haze .partner-card:hover,
+        .theme-purple-haze .visit-btn:hover,
+        .theme-purple-haze .nav-tab:hover,
+        .theme-purple-haze .nav-tab.active {
             box-shadow: 0 0 15px var(--primary-orange) !important;
             border-color: var(--accent-orange) !important;
         }
 
-        /* Amber Theme (Default) */
         .theme-amber {
             --primary-orange: #c27c15;
+            --primary-orange-rgb: 194, 124, 21;
             --dark-bg: #0a0a0a;
             --light-text: #f0f0f0;
             --gray-text: #888;
             --accent-orange: #e69500;
         }
-        
-        @media (max-width:768px){
-            .lessons-grid{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
-            .logo{height:80px}
-            .terminal-prompt{padding:10px}
-            .game-controls{flex-direction:column;gap:10px}
-            .social-icons {top: 10px; right: 10px;}
-            .comments-section {margin: 20px auto;}
-            .padlet-embed {height: 400px;}
+
+        @media (max-width:768px) {
+            .lessons-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr))
+            }
+
+            .logo {
+                height: 80px
+            }
+
+            .terminal-prompt {
+                padding: 10px
+            }
+
+            .game-controls {
+                flex-direction: column;
+                gap: 10px
+            }
+
+            .social-icons {
+                top: 10px;
+                right: 10px;
+            }
+
+            .comments-section {
+                margin: 20px auto;
+            }
+
+            .padlet-embed {
+                height: 400px;
+            }
+
+            .nav-tabs {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .nav-tab {
+                padding: 10px 20px;
+            }
+
+            .partners-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
-
 <body>
     <canvas id="matrix-bg"></canvas>
     <div class="container" id="main-container">
         <header>
             <div class="social-icons">
-                <a href="https://github.com/NoahsAmazingTutoringHelp" target="_blank"><i class="fab fa-github"></i></a>
-                <a href="https://www.tiktok.com/@noahstutoringhub" target="_blank"><i class="fab fa-tiktok"></i></a>
+                <a href="https://discord.gg/pCGQ8vrKza" target="_blank">
+                    <i class="fab fa-discord"></i>
+                </a>
+                <a href="https://github.com/NoahsAmazingTutoringHelp" target="_blank">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://www.tiktok.com/@noahstutoringhub" target="_blank">
+                    <i class="fab fa-tiktok"></i>
+                </a>
             </div>
             <div class="logo-container">
                 <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/logo.png" alt="Noah's Tutoring Hub" class="logo">
@@ -537,40 +979,41 @@ h2::after {
             <div class="terminal-prompt">
                 <p class="prompt-line">> SYSTEM BOOTING...</p>
                 <p class="prompt-line">> WELCOME TO NOAH'S TUTORING HUB.</p>
-                <p class="prompt-line">> CONNECTING... <span class="glow" style="color: var(--primary-orange);">SUCCESS</span></p>
+                <p class="prompt-line">> CONNECTING... <span class="glow" style="color: var(--primary-orange);">SUCCESS</span>
+                </p>
                 <p class="prompt-line">> LESSONS LOADING...</p>
                 <p class="prompt-line typing">> BOREDOM BEING SOLVED...</p>
             </div>
         </header>
-        <section id="popular">
+        <div class="nav-tabs">
+            <div class="nav-tab active" id="lessonsTab" onclick="switchTab('lessons')">LESSONS</div>
+            <div class="nav-tab" id="partnersTab" onclick="switchTab('partners')">PARTNERS</div>
+        </div>
+        <section id="lessons-section">
             <h2>POPULAR</h2>
             <div class="lessons-grid">
-                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/bookish-happiness/')">
-                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/197.jpg" alt="Strategic Logic Simulator" class="lesson-image">
+                <div class="lesson-card" onclick="openLesson('Plants Vs Zombies 2', 'https://noahsamazingtutoringhelp.github.io/bookish-happiness/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/197.jpg" alt="Plants Vs Zombies 2" class="lesson-image">
                     <h3 class="lesson-title">Plants Vs Zombies 2</h3>
                     <p class="lesson-desc">Defend your lawn with crazy plants against fun-loving zombies across time</p>
                     <span class="launch-command">[LAUNCH: PVZ_2]</span>
                 </div>
-
-                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/16.html')">
-                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/22.jpg" alt="Geographic Explorer" class="lesson-image">
+                <div class="lesson-card" onclick="openLesson('Hotline Miami', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/16.html')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/22.jpg" alt="Hotline Miami" class="lesson-image">
                     <h3 class="lesson-title">Hotline Miami</h3>
                     <p class="lesson-desc">Fast-paced top-down action combat</p>
                     <span class="launch-command">[LAUNCH: HOTLINE_MIAMI]</span>
                 </div>
-
-                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://thirstygithub.github.io/cool-math/')">
-                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/195.jpg" alt="Physics Constructor" class="lesson-image">
+                <div class="lesson-card" onclick="openLesson('Balatro', 'https://thirstygithub.github.io/cool-math/')">
+                    <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/195.jpg" alt="Balatro" class="lesson-image">
                     <h3 class="lesson-title">Balatro</h3>
                     <p class="lesson-desc">Build insane poker hands with special Joker cards</p>
                     <span class="launch-command">[LAUNCH: BALATRO]</span>
                 </div>
             </div>
         </section>
-
         <section id="all-lessons">
             <h2>ALL LESSONS</h2>
-            <!-- Search Box -->
             <div class="search-container">
                 <input type="text" id="searchInput" class="search-box" placeholder="> SEARCH LESSONS... [TYPE TO FILTER]">
                 <div class="search-icon">
@@ -582,7 +1025,7 @@ h2::after {
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/91.html')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/217.jpg" alt="Undertale" class="lesson-image">
                     <h3 class="lesson-title">Undertale</h3>
-                    <p class="lesson-desc">A somewhat horror game where you control a schoolboy trying to escape his troubled home life</p>
+                    <p class="lesson-desc">An RPG where you play as a human child who falls into an underground world of monsters, with the goal of getting back to the surface</p>
                     <span class="launch-command">[LAUNCH: UNDERTALE]</span>
                 </div>
 
@@ -590,7 +1033,7 @@ h2::after {
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/216.jpg" alt="The Legend of Zelda Majora's Mask" class="lesson-image">
                     <h3 class="lesson-title">The Legend of Zelda Majora's Mask</h3>
                     <p class="lesson-desc">A dark adventure through a doomed world where you have only 3 days to prevent the moon from crashing</p>
-                    <span class="launch-command">[LAUNCH: THE_LEGEND_OF_ZELDA_MAJORAS_MASK]</span>
+                    <span class="launch-command">[LAUNCH: TLOZMM]</span>
                 </div>
 
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/89.html')">
@@ -632,7 +1075,7 @@ h2::after {
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/210.jpg" alt="Assessment Examination" class="lesson-image">
                     <h3 class="lesson-title">Assessment Examination</h3>
                     <p class="lesson-desc">A comprehensive test covering multiple subjects to evaluate academic progress and knowledge retention</p>
-                    <span class="launch-command">[LAUNCH: ASSESSMENT_EXAMINATION]</span>
+                    <span class="launch-command">[LAUNCH: AE]</span>
                 </div>
                 
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/83.html')">
@@ -641,133 +1084,133 @@ h2::after {
                     <p class="lesson-desc">A somewhat horror game where you control a schoolboy trying to escape his troubled home life</p>
                     <span class="launch-command">[LAUNCH: SCHOOLBOY_RUNAWAY]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/82.html')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/208.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Fears To Fathom: Home Alone</h3>
                     <p class="lesson-desc">A horror game where you are home alone and must survive a stalker's terrifying visits</p>
                     <span class="launch-command">[LAUNCH: FEARS_TO_FATHOM_HA]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/81.html')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/207.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Dan The Man</h3>
                     <p class="lesson-desc">A side-scrolling beat 'em up where you fight through hordes of enemies to save your friends</p>
                     <span class="launch-command">[LAUNCH: DAN_THE_MAN]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/80.html')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/205.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Resident Evil 2</h3>
                     <p class="lesson-desc">Survival horror game where you fight zombies in a doomed police station</p>
                     <span class="launch-command">[LAUNCH: RESIDENT_EVIL_2]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/79.html')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/204.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Get Yoked</h3>
                     <p class="lesson-desc">A fitness simulator where you lift weights and manage your gym</p>
                     <span class="launch-command">[LAUNCH: GET_YOKED]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/78.html')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/203.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Douche Bag Life</h3>
                     <p class="lesson-desc">A satirical life simulator where you make terrible choices to become the ultimate bro</p>
                     <span class="launch-command">[LAUNCH: DOUCHE_BAG_LIFE]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/77.html')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/202.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Donkey Kong</h3>
                     <p class="lesson-desc">Classic arcade game where Jumpman must rescue his girlfriend from a giant ape</p>
                     <span class="launch-command">[LAUNCH: DONKEY_KONG]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/75.html')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/201.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Apple Worm</h3>
                     <p class="lesson-desc">A retro arcade game where you guide a worm to eat apples and grow longer</p>
                     <span class="launch-command">[LAUNCH: APPLE_WORM]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/74.html')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/200.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Chess</h3>
                     <p class="lesson-desc">A classic strategy game where two kings battle to the death</p>
                     <span class="launch-command">[LAUNCH: CHESS]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/73.html')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/199.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Doki Doki Literature Club</h3>
                     <p class="lesson-desc">A cute dating simulator where you write poems for your crush, but something is terribly wrong</p>
                     <span class="launch-command">[LAUNCH: DDLC]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/72.html')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/198.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Getting Over It</h3>
                     <p class="lesson-desc">A frustrating climbing game where you use a hammer to scale a mountain of junk</p>
                     <span class="launch-command">[LAUNCH: GETTING_OVER_IT]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://ud-gles3games.shared-osj.k8s.n2i.io/?deeplinksURI=null%3A%2F%2F&deeplinksApp=com.tocaboca.tocalifeworld&quotaBytes=89000000&naturalOrientation=portrait&invertNaturalOrientation&forcedNaturalOrientation&jitterBufferMin=0&deeplinksService=true&backOnDisconnected=true&disconnectedMessage=null&api=%7B%22back%22%3Afalse%7D&title=Toca+Boca+World')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/206.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Toca-Boca-World</h3>
                     <p class="lesson-desc">A digital toy box where you create your own stories and worlds.</p>
                     <span class="launch-command">[LAUNCH: TOCA_BOCA_WORLD]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/71.html')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/196.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Tattletail</h3>
                     <p class="lesson-desc">Feed and care for a creepy, talking toy that wanders your house at night</p>
                     <span class="launch-command">[LAUNCH: TATTLETAIL]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/bookish-happiness/')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/197.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Plants Vs Zombies 2</h3>
                     <p class="lesson-desc">Defend your lawn with crazy plants against fun-loving zombies across time</p>
                     <span class="launch-command">[LAUNCH: PVZ_2]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://thirstygithub.github.io/cool-math/')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/195.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Balatro</h3>
                     <p class="lesson-desc">Build insane poker hands with special Joker cards</p>
                     <span class="launch-command">[LAUNCH: BALATRO]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/69.html')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/189.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Sonic the Hedgehog 3</h3>
                     <p class="lesson-desc">Classic platformer with Sonic and Tails vs Dr. Robotnik</p>
                     <span class="launch-command">[LAUNCH: STH3]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/68.html')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/190.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Sonic the Hedgehog 2</h3>
                     <p class="lesson-desc">Iconic sequel introducing Tails and spin dash move</p>
                     <span class="launch-command">[LAUNCH: STH2]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/67.html')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/191.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Sonic Mania</h3>
                     <p class="lesson-desc">Modern 2D Sonic with remixed classics and new zones</p>
                     <span class="launch-command">[LAUNCH: SONIC_MANIA]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/66.html')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/192.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Sonic CD</h3>
                     <p class="lesson-desc">Time-travel adventure with past and future versions</p>
                     <span class="launch-command">[LAUNCH: SONIC_CD]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/70.html')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/193.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">War The Knights</h3>
@@ -781,91 +1224,91 @@ h2::after {
                     <p class="lesson-desc">Arcade football with simple controls and power-ups</p>
                     <span class="launch-command">[LAUNCH: FOOTBALL_BROS]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/63.html')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/187.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Buckshot Roulette</h3>
                     <p class="lesson-desc">Russian Roulette type game with a TWIST</p>
                     <span class="launch-command">[LAUNCH: BUCKSHOT_ROULETTE]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/Algebrudda-Calculator/')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/188.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Cup Head</h3>
                     <p class="lesson-desc">Fight a series of monsters to break your deal with the devil</p>
                     <span class="launch-command">[LAUNCH: CUP_HEAD]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/64.html')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/186.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Slime Rancher</h3>
                     <p class="lesson-desc">Suck and collect slimes and raise them in a ranch</p>
                     <span class="launch-command">[LAUNCH: SLIME_RANCHER]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/1.html')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/1.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">FNAF: Pizza Sim</h3>
                     <p class="lesson-desc">Manage your own pizzeria while surviving animatronic horrors</p>
                     <span class="launch-command">[LAUNCH: PIZZA_SIM]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/fantastic-octo-journey/')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/2.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Baseball Bros</h3>
                     <p class="lesson-desc">Engage in exciting baseball matches with strategic gameplay</p>
                     <span class="launch-command">[LAUNCH: BASEBALL_BROS]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/3.html')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/3.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">A Dance of Fire and Ice</h3>
                     <p class="lesson-desc">Rhythm game requiring perfect timing between two spheres</p>
                     <span class="launch-command">[LAUNCH: ADOFAI]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/upgraded-goggles/')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/4.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Smashy Kart</h3>
                     <p class="lesson-desc">High-speed kart racing with demolition derby elements</p>
                     <span class="launch-command">[LAUNCH: SMASHY_KART]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/studious-journey/')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/5.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Golf Orbit</h3>
                     <p class="lesson-desc">Miniature golf in space with gravity mechanics</p>
                     <span class="launch-command">[LAUNCH: GOLF_ORBIT]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/expert-pancake/')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/6.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">3D Free Kick</h3>
                     <p class="lesson-desc">Soccer free kick simulator with realistic physics</p>
                     <span class="launch-command">[LAUNCH: 3D_FREE_KICK]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/4.html')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/7.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Retro Bowl College</h3>
                     <p class="lesson-desc">College football management simulation</p>
                     <span class="launch-command">[LAUNCH: RB_COLLEGE]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://noahsamazingtutoringhelp.github.io/legendary-octo-train/')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/8.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Deepest Sword</h3>
                     <p class="lesson-desc">Adventure game about retrieving the deepest sword</p>
                     <span class="launch-command">[LAUNCH: DEEPEST_SWORD]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/5.html')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/9.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Tomodachi Life</h3>
                     <p class="lesson-desc">Life simulation with quirky island characters</p>
                     <span class="launch-command">[LAUNCH: TOMODACHI_LIFE]</span>
                 </div>
-
+                
                 <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/6.html')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/10.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">FNAF: Sister Location</h3>
@@ -1551,7 +1994,7 @@ h2::after {
                     <span class="launch-command">[LAUNCH: SM64]</span>
                 </div>
 
-                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://llerrah.com/https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/fruitmerge/index.html')">
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://llerrah.com/games/fruitmerge/index.html')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/110.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Fruit Merge</h3>
                     <p class="lesson-desc">Merge fruit puzzle game</p>
@@ -1803,7 +2246,7 @@ h2::after {
                     <span class="launch-command">[LAUNCH: STACK BOUNCE]</span>
                 </div>
 
-                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/56.html')">
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'games/56.html')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/148.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Plants Vs Zombies</h3>
                     <p class="lesson-desc">Tower defense strategy</p>
@@ -1880,7 +2323,7 @@ h2::after {
                     <span class="launch-command">[LAUNCH: RETRO_BOWL]</span>
                 </div>
 
-                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/57.html')">
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'games/57.html')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/159.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Half Life</h3>
                     <p class="lesson-desc">Sci-fi FPS adventure</p>
@@ -1971,7 +2414,7 @@ h2::after {
                     <span class="launch-command">[LAUNCH: DODGE_BALL]</span>
                 </div>
 
-                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/58.html')">
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'games/58.html')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/172.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Age of War 2</h3>
                     <p class="lesson-desc">Evolution strategy game</p>
@@ -2027,7 +2470,7 @@ h2::after {
                     <span class="launch-command">[LAUNCH: DRIFT_HUNTERS]</span>
                 </div>
 
-                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/61.html')">
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'games/61.html')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/180.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Cut The Rope</h3>
                     <p class="lesson-desc">Physics puzzle game</p>
@@ -2062,249 +2505,259 @@ h2::after {
                     <span class="launch-command">[LAUNCH: MONKEY_MART]</span>
                 </div>
 
-                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'https://rawcdn.githack.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/master/games/62.html')">
+                <div class="lesson-card" onclick="openLesson('Noahs Tutoring Hub', 'games/62.html')">
                     <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/185.jpg" alt="Noahs Tutoring Hub" class="lesson-image">
                     <h3 class="lesson-title">Short Ride</h3>
                     <p class="lesson-desc">Quick racing challenges</p>
                     <span class="launch-command">[LAUNCH: SHORT_RIDE]</span>
                 </div>
+            </div>
+        </section>
+        <section id="partners-section" class="partners-section">
+            <h2>PARTNERS</h2>
+            <div class="partners-grid">
+                <div class="partner-card">
+                    <img src="https://c.tenor.com/96S6wqqF10cAAAAC/tenor.gif" alt="Partner Logo" class="partner-image">
+                    <h3 class="partner-title">Example Partner 1</h3>
+                    <p class="partner-desc">future partner(s) will go here</p>
+                    <div class="partner-buttons">
+                        <button class="discord-btn" onclick="window.open('https://discord.gg/pCGQ8vrKza', '_blank')">
+                            <i class="fab fa-discord"></i>
+                        </button>
+                        <button class="visit-btn" onclick="window.open('https://c.tenor.com/96S6wqqF10cAAAAC/tenor.gif', '_blank')">VISIT SITE</button>
+                    </div>
+                </div>
+                <div class="partner-card">
+                    <img src="https://c.tenor.com/96S6wqqF10cAAAAC/tenor.gif" alt="Partner Logo" class="partner-image">
+                    <h3 class="partner-title">Example Partner 2</h3>
+                    <p class="partner-desc">future partner(s) will go here</p>
+                    <div class="partner-buttons">
+                        <button class="discord-btn" onclick="window.open('https://discord.gg/pCGQ8vrKza', '_blank')">
+                            <i class="fab fa-discord"></i>
+                        </button>
+                        <button class="visit-btn" onclick="window.open('https://c.tenor.com/96S6wqqF10cAAAAC/tenor.gif', '_blank')">VISIT SITE</button>
+                    </div>
+                </div>
+                <div class="partner-card">
+                    <img src="https://c.tenor.com/96S6wqqF10cAAAAC/tenor.gif" alt="Partner Logo" class="partner-image">
+                    <h3 class="partner-title">Example Partner 3</h3>
+                    <p class="partner-desc">future partner(s) will go here</p>
+                    <div class="partner-buttons">
+                        <button class="discord-btn" onclick="window.open('https://discord.gg/pCGQ8vrKza', '_blank')">
+                            <i class="fab fa-discord"></i>
+                        </button>
+                        <button class="visit-btn" onclick="window.open('https://c.tenor.com/96S6wqqF10cAAAAC/tenor.gif', '_blank')">VISIT SITE</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="comments-section">
+            <div class="blur-overlay" id="warningOverlay">
+                <div class="warning-content">
+                    <h2 class="warning-title">⚠️ WARNING</h2>
+                    <p class="warning-text">This comments section may contain unmoderated content. <br>Proceed at your own discretion. </p>
+                    <button class="acknowledge-btn" onclick="hideWarning()">I UNDERSTAND</button>
+                </div>
+            </div>
+            <h2>COMMENTS</h2>
+            <div class="padlet-embed" style="border:1px solid rgba(0,0,0,0.1);border-radius:8px;box-sizing:border-box;overflow:hidden;position:relative;width:100%;background:transparent;">
+                <iframe src="https://padlet.com/embed/tmja6bqdp45euuh7" frameborder="0" allow="camera;microphone;geolocation" style="width:100%;height:500px;display:block;padding:0;margin:0"></iframe>
+            </div>
+            <div class="padlet-footer">
+                <a href="https://padlet.com?ref=embed" style="color:#b3b3b3;text-decoration:none;font-size:12px;font-family:Arial,sans-serif;font-weight:bold;text-align: right;" target="_blank">Created with Padlet</a>
+            </div>
         </section>
         <footer>
-            <p>> SYSTEM READY. AWAITING USER COMMAND...</p>
-            <p style="margin-top:15px">&copy; 2025 Noah's Tutoring Hub</p>
+            <p>© 2025 Noah's Tutoring Hub. All rights reserved.</p>
+            <p>Educational purposes only.</p>
         </footer>
+    </div>
+    <div class="game-page" id="gamePage">
+        <div class="game-header">
+            <div class="game-title" id="gameTitle">Game Title</div>
+            <div class="game-controls">
+                <button class="btn" onclick="toggleFullscreen()">
+                    <i class="fas fa-expand"></i> Fullscreen 
+                </button>
+                <button class="btn" onclick="closeLesson()">
+                    <i class="fas fa-times"></i> Exit 
+                </button>
+            </div>
         </div>
+        <div class="game-container">
+            <iframe id="gameFrame" class="game-frame" frameborder="0" src=""></iframe>
+        </div>
+    </div>
+    <script>
+        const canvas = document.getElementById('matrix-bg');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const chars = '01';
+        const charArray = chars.split('');
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+        for (let x = 0; x < columns; x++) {
+            drops[x] = 1;
+        }
 
-        <!-- Comments Section -->
-        <div class="comments-section">
-            <div class="blur-overlay" id="blurOverlay">
-                <div class="warning-content">
-                    <div class="logo-container">
-                        <img src="https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/images/logo.png" alt="Noah's Tutoring Hub" class="logo">
-                    </div>
-                    <h2 class="warning-title">Content Warning</h2>
-                    <p class="warning-text">Comments may include explicit content. Please proceed with caution.</p>
-                    <button class="acknowledge-btn" id="acknowledgeBtn">I Understand</button>
-                </div>
-            </div>
-            <div class="padlet-embed">
-                <iframe src="https://padlet.com/embed/tmja6bqdp45euuh7" frameborder="0" allow="camera;microphone;geolocation"></iframe>
-            </div>
-        </div>
-        <!-- Game Page -->
-        <div id="game-page" class="game-page">
-            <div class="game-header">
-                <h1 class="game-title" id="current-game-title">Game Title</h1>
-                <div class="game-controls">
-                    <button class="btn" onclick="closeGame()">Back to Hub</button>
-                </div>
-            </div>
-            <div class="game-container">
-                <div class="fullscreen-btn-container">
-                    <button class="fullscreen-btn" onclick="openFullscreen()">
-                        <i class="fas fa-expand"></i> Full Screen Mode
-                    </button>
-                </div>
-                <iframe id="game-frame" class="game-frame" frameborder="0" allowfullscreen></iframe>
-                <div id="game-placeholder" class="game-placeholder" style="display: none;">
-                    <i class="fas fa-gamepad"></i>
-                    <h2 style="color: var(--primary-orange); margin-bottom: 10px;">Interactive Lesson</h2>
-                    <p style="color: var(--gray-text);">This is where the interactive lesson would load</p>
-                </div>
-            </div>
-        </div>
-        <script>
-            // Add these alert messages
-window.addEventListener('load', function() {
-    setTimeout(function() {
-        alert("Thank you for using Noahs Tutoring Hub, make sure to join the discord 'https://discord.gg/pCGQ8vrKza' for future updates");
-        
-        setTimeout(function() {
-            alert("Just a heads up, not all games may be unblocked unfortunately, im working on a work around but githack is my best bet as of now");
-        }, 80);
-    }, 150);
-});          
-            const canvas=document.getElementById('matrix-bg'),ctx=canvas.getContext('2d')
-            canvas.width=window.innerWidth,canvas.height=window.innerHeight
-            const chars="01010101010101010101010101010101NOAHSTUTORINGHUB2023",charArray=chars.split(""),fontSize=14,columns=canvas.width/fontSize,drops=[]
-            for(let x=0;x<columns;x++)drops[x]=1
-            function drawMatrix(){
-                ctx.fillStyle="rgba(10,10,10,0.04)",ctx.fillRect(0,0,canvas.width,canvas.height)
-                ctx.fillStyle=window.matrixColor || "#c27c15",ctx.font=fontSize+"px monospace"
-                for(let i=0;i<drops.length;i++){
-                    const text=charArray[Math.floor(Math.random()*charArray.length)]
-                    ctx.fillText(text,i*fontSize,drops[i]*fontSize)
-                    if(drops[i]*fontSize>canvas.height&&Math.random()>.975)drops[i]=0
-                    drops[i]++
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(10, 10, 10, 0.04)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = window.matrixColor || '#c27c15';
+            ctx.font = fontSize + 'px monospace';
+            for (let i = 0; i < drops.length; i++) {
+                const text = charArray[Math.floor(Math.random() * charArray.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 35);
+        window.addEventListener('resize', function() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        function openLesson(title, url) {
+            document.getElementById('gameTitle').textContent = title;
+            document.getElementById('gameFrame').src = url;
+            document.getElementById('gamePage').classList.add('active');
+            document.getElementById('main-container').classList.add('slide-down');
+        }
+
+        function closeLesson() {
+            document.getElementById('gamePage').classList.add('slide-down');
+            document.getElementById('main-container').classList.remove('slide-down');
+            setTimeout(function() {
+                document.getElementById('gamePage').classList.remove('active', 'slide-down');
+                document.getElementById('gameFrame').src = '';
+                document.getElementById('gameFrame').classList.remove('fullscreen');
+            }, 500);
+        }
+
+        // Improved fullscreen function
+        function toggleFullscreen() {
+            const gameFrame = document.getElementById('gameFrame');
+            
+            // Check if we're already in fullscreen mode
+            if (document.fullscreenElement || document.webkitFullscreenElement || 
+                document.msFullscreenElement || document.mozFullScreenElement) {
+                // Exit fullscreen
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                }
+            } else {
+                // Enter fullscreen on the iframe
+                if (gameFrame.requestFullscreen) {
+                    gameFrame.requestFullscreen();
+                } else if (gameFrame.webkitRequestFullscreen) {
+                    gameFrame.webkitRequestFullscreen();
+                } else if (gameFrame.msRequestFullscreen) {
+                    gameFrame.msRequestFullscreen();
+                } else if (gameFrame.mozRequestFullScreen) {
+                    gameFrame.mozRequestFullScreen();
                 }
             }
-            setInterval(drawMatrix,35)
-            window.addEventListener('resize',function(){canvas.width=window.innerWidth,canvas.height=window.innerHeight})
-            setTimeout(function(){document.querySelector('.typing').style.borderRight='none',document.querySelector('.tagline').textContent='TUTORING HUB CONNECTED'},3500)
-            function openLesson(lessonName,gamePath){
-                const mainContainer=document.getElementById('main-container'),gamePage=document.getElementById('game-page'),gameFrame=document.getElementById('game-frame'),gamePlaceholder=document.getElementById('game-placeholder')
-                mainContainer.classList.add('slide-down')
-                setTimeout(function(){
-                    document.getElementById('current-game-title').textContent=lessonName,gamePage.classList.add('active')
-                    gamePath.startsWith('http')?(gameFrame.src=gamePath,gameFrame.style.display='block',gamePlaceholder.style.display='none'):(gameFrame.src=gamePath,gameFrame.style.display='block',gamePlaceholder.style.display='none')
-                },500)
+        }
+
+        // Listen for fullscreen change events
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+        document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+        document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
+        function handleFullscreenChange() {
+            const gameFrame = document.getElementById('gameFrame');
+            const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement || 
+                                document.msFullscreenElement || document.mozFullScreenElement;
+            
+            if (isFullscreen) {
+                gameFrame.classList.add('fullscreen');
+            } else {
+                gameFrame.classList.remove('fullscreen');
             }
-            function closeGame(){
-                const mainContainer=document.getElementById('main-container'),gamePage=document.getElementById('game-page'),gameFrame=document.getElementById('game-frame'),gamePlaceholder=document.getElementById('game-placeholder')
-                gameFrame.src='',gameFrame.style.display='none',gamePlaceholder.style.display='flex',gamePage.classList.remove('active')
-                setTimeout(function(){mainContainer.classList.remove('slide-down')},500)
+        }
+
+        // Listen for ESC key to exit fullscreen
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const gameFrame = document.getElementById('gameFrame');
+                if (gameFrame.classList.contains('fullscreen')) {
+                    toggleFullscreen();
+                }
             }
-            function openFullscreen(){
-                const gameFrame=document.getElementById('game-frame')
-                if(gameFrame.requestFullscreen)gameFrame.requestFullscreen()
-                else if(gameFrame.webkitRequestFullscreen)gameFrame.webkitRequestFullscreen()
-                else if(gameFrame.msRequestFullscreen)gameFrame.msRequestFullscreen()
-            }
-                // Comments section warning
-                const acknowledgeBtn = document.getElementById('acknowledgeBtn');
-                const blurOverlay = document.getElementById('blurOverlay');
-                
-                if (acknowledgeBtn && blurOverlay) {
-                    acknowledgeBtn.addEventListener('click', function() {
-                        blurOverlay.classList.add('hidden');
-                        localStorage.setItem('contentWarningAcknowledged', 'true');
-                    });
-                    
-                    if (localStorage.getItem('contentWarningAcknowledged') === 'true') {
-                        blurOverlay.classList.add('hidden');
-                    }
-    
-                    // Search functionality
-                   // Search functionality
-            const searchInput = document.getElementById('searchInput');
-            const allLessonsGrid = document.getElementById('allLessonsGrid');
+        });
+
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const lessonCards = document.querySelectorAll('#allLessonsGrid .lesson-card');
+            let visibleCount = 0;
+            lessonCards.forEach(card => {
+                const title = card.querySelector('.lesson-title').textContent.toLowerCase();
+                const desc = card.querySelector('.lesson-desc').textContent.toLowerCase();
+                if (title.includes(searchTerm) || desc.includes(searchTerm)) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
             const searchStats = document.getElementById('searchStats');
-            let lessonCards = Array.from(document.querySelectorAll('#allLessonsGrid .lesson-card'));
-    
-            function updateSearchStats(visibleCount, totalCount) {
-                searchStats.textContent = `> DISPLAYING ${visibleCount} OF ${totalCount} LESSONS`;
+            if (searchTerm.length > 0) {
+                searchStats.textContent = `Found ${visibleCount} lesson${visibleCount !== 1 ? 's' : ''} matching "${searchTerm}"`;
+            } else {
+                searchStats.textContent = '';
             }
-    
-            function performSearch() {
-                const searchTerm = searchInput.value.toLowerCase().trim();
-                
-                // Refresh the lessonCards array to ensure we have all current cards
-                lessonCards = Array.from(document.querySelectorAll('#allLessonsGrid .lesson-card'));
-                
-                if (searchTerm === '') {
-                    // Show all cards
-                    lessonCards.forEach(card => {
-                        card.style.display = 'block';
-                    });
-                    
-                    // Remove any no results message
-                    const existingNoResults = document.getElementById('noResultsMessage');
-                    if (existingNoResults) {
-                        existingNoResults.remove();
-                    }
-                    
-                    updateSearchStats(lessonCards.length, lessonCards.length);
-                    return;
-                }
-    
-                let visibleCount = 0;
-                
-                lessonCards.forEach(card => {
-                    const title = card.querySelector('.lesson-title').textContent.toLowerCase();
-                    const desc = card.querySelector('.lesson-desc').textContent.toLowerCase();
-                    const command = card.querySelector('.launch-command').textContent.toLowerCase();
-                    
-                    const matches = title.includes(searchTerm) || 
-                                  desc.includes(searchTerm) || 
-                                  command.includes(searchTerm);
-                    
-                    card.style.display = matches ? 'block' : 'none';
-                    if (matches) visibleCount++;
-                });
-    
-                updateSearchStats(visibleCount, lessonCards.length);
-                
-                // Show no results message if needed
-                const existingNoResults = document.getElementById('noResultsMessage');
-                if (visibleCount === 0 && !existingNoResults) {
-                    const noResults = document.createElement('div');
-                    noResults.id = 'noResultsMessage';
-                    noResults.className = 'no-results';
-                    noResults.innerHTML = `
-                        <i class="fas fa-search" style="font-size: 2rem; margin-bottom: 10px;"></i>
-                        <div>> NO LESSONS FOUND MATCHING "${searchTerm}"</div>
-                        <div style="margin-top: 10px; font-size: 0.9rem;">Try different search terms</div>
-                    `;
-                    allLessonsGrid.appendChild(noResults);
-                } else if (visibleCount > 0 && existingNoResults) {
-                    existingNoResults.remove();
-                }
-            }
-    
-            // Event listeners for search
-            searchInput.addEventListener('input', performSearch);
-            searchInput.addEventListener('keyup', (e) => {
-                if (e.key === 'Escape') {
-                    searchInput.value = '';
-                    performSearch();
-                }
-            });
-    
-            // Initialize search stats
-            updateSearchStats(lessonCards.length, lessonCards.length);
-                }
-                    // Theme cycling functionality
-            const themeToggle = document.getElementById('themeToggle');
-            const themes = ['amber', 'rainbow', 'cyber-green', 'ice-blue', 'solarized', 'purple-haze'];
-            let currentThemeIndex = 0;
-    
-            // Function to update matrix color based on theme
-            function updateMatrixColor(theme) {
-                const matrixColors = {
-                    'amber': '#c27c15',
-                    'rainbow': '#ff0080', 
-                    'cyber-green': '#00ff00',
-                    'ice-blue': '#00ccff',
-                    'solarized': '#2aa198',
-                    'purple-haze': '#9b59b6'
-                };
-                
-                // This will update the matrix color on next draw cycle
-                window.matrixColor = matrixColors[theme];
-            }
-    
-            // Load saved theme from localStorage
-            const savedTheme = localStorage.getItem('selectedTheme');
-            if (savedTheme) {
-                const themeName = savedTheme.replace('theme-', '');
-                document.body.className = savedTheme;
-                currentThemeIndex = themes.indexOf(themeName);
-                updateMatrixColor(themeName);
-            }
-    
-            themeToggle.addEventListener('click', function() {
-                // Remove current theme
-                document.body.classList.remove(`theme-${themes[currentThemeIndex]}`);
-                
-                // Cycle to next theme
-                currentThemeIndex = (currentThemeIndex + 1) % themes.length;
-                
-                // Apply new theme
-                document.body.classList.add(`theme-${themes[currentThemeIndex]}`);
-                
-                // Update matrix color
-                updateMatrixColor(themes[currentThemeIndex]);
-                
-                // Save to localStorage
-                localStorage.setItem('selectedTheme', `theme-${themes[currentThemeIndex]}`);
-                
-                // Add click feedback
-                this.style.transform = 'scale(0.9)';
-                setTimeout(() => {
-                    this.style.transform = 'scale(1)';
-                }, 150);
-            });
-        </script>
-</body>
+        });
 
+        function hideWarning() {
+            document.getElementById('warningOverlay').classList.add('hidden');
+        }
+
+        function switchTab(tabName) {
+            document.getElementById('lessonsTab').classList.toggle('active', tabName === 'lessons');
+            document.getElementById('partnersTab').classList.toggle('active', tabName === 'partners');
+            document.getElementById('lessons-section').style.display = tabName === 'lessons' ? 'block' : 'none';
+            document.getElementById('all-lessons').style.display = tabName === 'lessons' ? 'block' : 'none';
+            document.getElementById('partners-section').style.display = tabName === 'partners' ? 'block' : 'none';
+        }
+        const themes = ['theme-amber', 'theme-rainbow', 'theme-cyber-green', 'theme-ice-blue', 'theme-solarized', 'theme-purple-haze'];
+        let currentThemeIndex = 0;
+
+        function cycleTheme() {
+            document.body.classList.remove(themes[currentThemeIndex]);
+            currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+            document.body.classList.add(themes[currentThemeIndex]);
+            const themeNames = ['Amber', 'Rainbow', 'Cyber Green', 'Ice Blue', 'Solarized', 'Purple Haze'];
+            document.getElementById('themeToggle').title = `Current: ${themeNames[currentThemeIndex]} - Click to cycle`;
+            updateMatrixColor();
+        }
+
+        function updateMatrixColor() {
+            const matrixColors = {
+                'theme-amber': '#c27c15',
+                'theme-rainbow': '#ff0080',
+                'theme-cyber-green': '#00ff00',
+                'theme-ice-blue': '#00ccff',
+                'theme-solarized': '#2aa198',
+                'theme-purple-haze': '#9b59b6'
+            };
+            window.matrixColor = matrixColors[themes[currentThemeIndex]];
+        }
+        document.getElementById('themeToggle').addEventListener('click', cycleTheme);
+        document.body.classList.add('theme-amber');
+        document.getElementById('themeToggle').title = 'Current: Amber - Click to cycle';
+        updateMatrixColor();
+    </script>
+</body>
 </html>
